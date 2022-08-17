@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <audio style="display:none; height: 0" id="bg-music" preload="auto" src="5lkp9-zm2su.mp3" loop="loop"></audio>
+
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+
+    <style>
+        .header {
+            width: 100%;
+            height: auto;
+            background-color: rgba(235, 34, 24, 0.143);
+            border:25px outset rgb(243, 162, 175);
+        }
+        .header img{
+            width: 100%;
+            /* float: left; */
+        }
+        .header p{
+            font-family: "Lucida Calligraphy", cursive, serif, sans-serif;
+            font-weight: bolder;
+            font-size: larger;
+            text-align: center;
+        }
+        
+
+
+        
+    </style>
+</head>
+
+<body>
+    <div class="header"> 
+        <img src="laojie.png">
+
+        
+
+        <p>晨光敲响拂晓的钟，你们互赠了温柔。</p>
+        <p>晚霞为你们装点殿堂，</p>
+        <p>你们着上布满星辰的衣裳，循皎皎月色启航。</p>
+        <p>我抬眼望去，</p>
+        <p>宇宙浩瀚，尽是浪漫。</p>
+        <p>祝愿你们俩</p>
+        <p>冷暖有相知</p>
+        <p>喜乐有分享</p>
+        <p>同量天地宽</p>
+        <p>共度日月长</p>
+        <p>祝老姐，姐夫新婚快乐</p>
+    </div>
+
+</body>
+<script type="text/javascript">
+    /*鼠标点击出现文字*/
+    $(document).ready(function(){
+        var a_index = 0;
+        $("body").click(function(e){
+            var a = new Array("他们好幸福","才子佳人","永结同心","白头偕老","花好月圆","百年好合");
+            var $i = $("<span/>").text(a[a_index]);
+            a_index = (a_index + 1) % a.length;
+            var x = e.pageX,y = e.pageY;
+            $i.css({
+                "z-index": 99999,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": "#ff6651"
+            });
+            $("body").append($i);
+            $i.animate({"top": y-180,"opacity": 0},1500,function() {
+                $i.remove();
+            });
+        });
+    });
+
+    //音乐自动播放
+			$(document).ready(function() {
+				autoPlayMusic();
+				audioAutoPlay();
+			});
+
+			function audioAutoPlay() {
+				var audio = document.getElementById('bg-music');
+				audio.play();
+				document.addEventListener("WeixinJSBridgeReady", function() {
+					audio.play();
+				}, false);
+			}
+			// 音乐播放
+			function autoPlayMusic() {
+				// 自动播放音乐效果，解决浏览器或者APP自动播放问题
+				function musicInBrowserHandler() {
+					musicPlay(true);
+					document.body.removeEventListener('touchstart', musicInBrowserHandler);
+				}
+				document.body.addEventListener('touchstart', musicInBrowserHandler);
+				// 自动播放音乐效果，解决微信自动播放问题
+				function musicInWeixinHandler() {
+					musicPlay(true);
+					document.addEventListener("WeixinJSBridgeReady", function() {
+						musicPlay(true);
+					}, false);
+					document.removeEventListener('DOMContentLoaded', musicInWeixinHandler);
+				}
+				document.addEventListener('DOMContentLoaded', musicInWeixinHandler);
+			}
+
+			function musicPlay(isPlay) {
+				var media = document.querySelector('#bg-music');
+				if (isPlay && media.paused) {
+					media.play();
+				}
+				if (!isPlay && !media.paused) {
+					media.pause();
+				}
+			}
+    </script>
+
+</html>
